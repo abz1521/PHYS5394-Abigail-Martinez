@@ -1,0 +1,15 @@
+% Plot Exponentially Damped Sinusoid Signal
+% Parameters
+SRN = 10;
+ta = 0.3;
+f = 30;
+tau = 10;
+
+
+Length = 0.2;
+
+sigVec = srn*exp(-(x-ta)/tau).*sin(2*pi*f*x + phi);
+
+
+plot(x,sigVec);
+title("Exponentially Damped Sinusoid Signal");
