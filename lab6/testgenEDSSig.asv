@@ -1,0 +1,27 @@
+% Signal parameters
+snr = 10;
+ta = 0.3;
+f = 20;
+tau = 0.2;
+phi = 0;
+l = 0.6;
+
+samplFreq = 
+
+sigVec = genEDSSig(x,snr,ta,f,tau,phi,l);
+
+%% Plot the spectrogram
+winLen = 0.2;
+ovrlp  = 0.1;
+
+% Convert to integer number of samples
+winLenSampl = floor(winLen*samplFreq);
+ovrlpSampl  = floor(ovrlp*samplFreq);
+[S,F,T]     = spectrogram(sigVec, winLenSampl, ovrlpSampl,[],samplFreq);
+
+% Plot the spectrogram
+figure;
+imagesc(T,F,abs(S)); axis xy;
+title('Spectrogram of Sine-Gaussian Signal')
+xlabel('Time (s)');
+ylabel('Frequency (Hz)');
