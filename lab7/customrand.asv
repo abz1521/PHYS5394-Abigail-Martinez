@@ -1,0 +1,4 @@
+% Function generates
+function randValue = customrand(a,b)
+randValue = (b-a)*rand() + a;
+
