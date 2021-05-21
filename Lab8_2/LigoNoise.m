@@ -42,7 +42,7 @@ noiseLIGOReal = sqrt(samplFreq)*fftfilt(b,noise);
 
 %% Estimate the PSD using pwelch
 
-[pxx, f] = pwelch(noiseLIGOReal, samplFreq, [], [], sampFreq);
+[pxx, f] = pwelch(noiseLIGOReal, samplFreq, [], [], samplFreq);
 
 figure;
 loglog(f,pxx);
