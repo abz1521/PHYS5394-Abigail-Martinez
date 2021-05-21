@@ -52,3 +52,7 @@ ylabel('PSD');
 
 figure;
 plot(noiseLIGOReal);
+title(LIGO Noise Ralization);
+xlabel('Frequency (kHz)');
+ylabel('Amplitude');
+
