@@ -9,16 +9,12 @@ highCuttoff = 700; % Hz
 % Low Frequency Cutoff
 lowSn = LIGOSen(42,2); 
 
-for i = 1:42
-    LIGOSen(i,2) = lowSn;
-end
+LIGOSen(1:42,2) = lowSn;
 
 % High Frequency Cutoff
 highSn = LIGOSen(71,2);
 
-for i = 71:length(LIGOSen(:,1))
-    LIGOSen(i,2) = highSn;
-end
+LIGOSen(71:end,2) = highSn;
 
 LIGOSen(2:end+1,:) = LIGOSen;
 LIGOSen(1,1) = 0; %Hz
