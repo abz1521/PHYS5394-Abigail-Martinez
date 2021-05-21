@@ -25,11 +25,11 @@ whitenedData = sqrt(samplFreq)*fftfilt(b,dataVal);
 winLen = 0.05; % window length
 ovrlp = 0.04; % overlap length
  
-winLenSamp = floor(winLen*sampFreq);
-ovrlpSamp  = floor(ovrlp*sampFreq);
+winLenSamp = floor(winLen*samplFreq);
+ovrlpSamp  = floor(ovrlp*samplFreq);
 
 % Generate Spectrogram 
-[S,F,T] = spectrogram(dataVal, winLenSamp, ovrlpSamp, [], sampFreq);
+[S,F,T] = spectrogram(dataVal, winLenSamp, ovrlpSamp, [], samplFreq);
 % Plot Spectrogram
 figure;
 imagesc(T, F, abs(S)); axis xy;
@@ -39,7 +39,7 @@ ylabel('Frequency (Hz)');
 colorbar;
 
 % Generate Whitened Spectrogram
-[S1,F1,T1] = spectrogram(whitenedData, winLenSamp, ovrlpSamp, [], sampFreq);
+[S1,F1,T1] = spectrogram(whitenedData, winLenSamp, ovrlpSamp, [], samplFreq);
 % Plot Whitened Spectrogram
 figure;
 imagesc(T1, F1, abs(S1)); axis xy;
