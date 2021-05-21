@@ -36,8 +36,8 @@ nSampl = 20*samplFreq; % 2 (s) * sampFreq
 noise = randn(1,nSampl);
 
 % FIR Filter
-freqVals  = dataLIGO(:,1);
-PSDvals   = dataLIGO(:,2);
+freqVals  = LIGOSen(:,1);
+PSDvals   = LIGOSen(:,2);
 filtrOrdr = 600; 
 
 b = fir2(fltrOrdr,freqVals/(samplFreq/2),sqrt(PSDvals));
