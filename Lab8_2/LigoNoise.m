@@ -36,7 +36,7 @@ freqVals  = LIGOSen(:,1);
 PSDvals   = LIGOSen(:,2);
 filtOrdr = 600; 
 
-b = fir2(filtOrdr,freqVals/(samplFreq/2),sqrt(PSDvals));
+%b = fir2(filtOrdr,freqVals/(samplFreq/2),sqrt(PSDvals));
 
 noiseLIGOReal = sqrt(samplFreq)*fftfilt(b,noise);
 
