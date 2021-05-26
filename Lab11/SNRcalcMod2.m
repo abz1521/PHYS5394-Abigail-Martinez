@@ -1,12 +1,4 @@
 %% How to normalize a signal for a given SNR
-% We will normalize a signal such that the Likelihood ratio (LR) test for it has
-% a given signal-to-noise ratio (SNR) in noise with a given Power Spectral 
-% Density (PSD). [We often shorten this statement to say: "Normalize the
-% signal to have a given SNR." ]
-
-% addpath ./DATA
-
-% This is the target SNR for the LR
 snr = 10;
 
 % Data generation parameters
@@ -26,10 +18,6 @@ A = 1;
 sigVec = genEDSSig(x,snr,ta,f,tau,phi,l);
 
 %% Use iLIGOSensitivity.m to generate a PSD vector
-% (Exercise: Prove that if the noise PSD is zero at some
-% frequencies but the signal added to the noise is not,
-% then one can create a detection statistic with infinite SNR.)
-
 % Read Ligo Sensitivity PSD
 LIGOSen = load('iLIGOSensitivity.txt', '-ascii');
 
@@ -60,13 +48,10 @@ PSDVals = PSDVals.^2;
 %*******************************
 
 %% Calculation of the norm
-% Norm of signal squared is inner product of signal with itself
 normSigSqrd = innerprodpsd(sigVec,sigVec,samplFreq,PSDVals);
 % Normalize signal to specified SNR
 sigVec = snr*sigVec/sqrt(normSigSqrd);
 
-%% Test
-%Obtain LLR values for multiple noise realizations
 nH0Data = 1000;
 llrH0 = zeros(1,nH0Data);
 for lp = 1:nH0Data
@@ -78,7 +63,6 @@ nH1Data = 1000;
 llrH1 = zeros(1,nH1Data);
 for lp = 1:nH0Data
     noiseVec = statgaussnoisegen(nSamples,[posFreq(:), PSDVals(:)],100,samplFreq);
-    % Add normalized signal
     dataVec = noiseVec + sigVec;
     llrH1(lp) = innerprodpsd(dataVec,sigVec,samplFreq,PSDVals);
 end
