@@ -20,11 +20,12 @@ dataX = (0:(nSamples-1))/sampFreq;
 % interpolate psd and freq vec to get length 1024
 psdVec = interp1(1:length(pxx),pxx,linspace(1,length(pxx),1025),'cubic');
 posFreq = interp1(1:length(posFreq),posFreq,linspace(1,length(posFreq),1025),'linear');
-
+sqrtPSD = sqrt(psdVec);
+b = fir2(100,posFreq/(sampFreq/2),sqrtPSD);
 %% Calculate the GLRT
 % m noise realizations
-glrtH0 = zeros(1,m);
 m = 1000;
+glrtH0 = zeros(1,m);
 pars = [70,25,7];
 
 for r = 1:m % m realizations
