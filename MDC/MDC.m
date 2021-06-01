@@ -24,10 +24,12 @@ posFreq = interp1(1:length(posFreq),posFreq,linspace(1,length(posFreq),1025),'li
 % m noise realizations
 tn = 4;
 m = 1000;
+
 % glrtH0 vector of the GLRT values for m noise realizations, for tn^2 parameters
 glrtH0 = zeros(tn^3,m);
 allglrt = zeros(tn^3); % all glrt values
 allsign = zeros(tn^3); % all significances
+masterPars = ones(tn^3,3);
 % Manually create fir2 filter once to save time
 sqrtPSD = sqrt(psdVec);
 b = fir2(100,posFreq/(sampFreq/2),sqrtPSD);
@@ -49,7 +51,7 @@ disp(['Lowest significance=',num2str(mSign(1)),newline,...
          '; a3=',num2str(masterPars(mIndex(1),3))]);
 
 %% Call PSO
-% parameter structrue for glrtqc4pso
+% parameter structrue
 nRuns = 8;
 nSteps = 2000;
 snr = 1;
@@ -61,7 +63,7 @@ inParams = struct('dataX',dataX,...
                   'psdVec',psdVec,...
                   'snr',snr,...
                   'rmin',rmin,...
-                  'rmax',rmaxbit);
+                  'rmax',rmax);
 
 outStruct = glrtqcpso(inParams,struct('maxSteps',2000),nRuns);
 
