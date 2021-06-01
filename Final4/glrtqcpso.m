@@ -1,5 +1,34 @@
 function outResults = glrtqcpso(inParams,psoParams,nRuns)
-
+%Regression of quadratic chirp using PSO
+%O = CRCBQCPPSO(I,P,N)
+%I is the input struct with the fields given below.  P is the PSO parameter
+%struct. Setting P to [] will invoke default parameters (see CRCBPSO). N is
+%the number of independent PSO runs. The output is returned in the struct
+%O. The fields of I are:
+% 'dataY': The data vector (a uniformly sampled time series).
+% 'dataX': The time stamps of the data samples.
+% 'dataXSq': dataX.^2
+% 'dataXCb': dataX.^3
+% 'rmin', 'rmax': The minimum and maximum values of the three parameters
+%                 a1, a2, a3 in the candidate signal:
+%                 a1*dataX+a2*dataXSq+a3*dataXCb
+%The fields of O are:
+% 'allRunsOutput': An N element struct array containing results from each PSO
+%              run. The fields of this struct are:
+%                 'fitVal': The fitness value.
+%                 'qcCoefs': The coefficients [a1, a2, a3].
+%                 'estSig': The estimated signal.
+%                 'totalFuncEvals': The total number of fitness
+%                                   evaluations.
+% 'bestRun': The best run.
+% 'bestFitness': best fitness from the best run.
+% 'bestSig' : The signal estimated in the best run.
+% 'bestQcCoefs' : [a1, a2, a3] found in the best run.
+% 'psd' : PSD values at positive DFT frequencies
+% 'samplFreq' : Sampling frequency
+%
+%Abigail Martinez, May 2021, adapted from crcbqcpso by
+%Soumya D. Mohanty, May 2018
 
 nSamples = length(inParams.dataX);
 
@@ -41,7 +70,7 @@ for lpruns = 1:nRuns
     outResults.allRunsOutput(lpruns).qcCoefs = qcCoefs;
     Sig = crcbgenqcsig(inParams.dataX,1,qcCoefs);
     % Normalize estimated qc signal (colored noise)
-    normSigSq = innerprodpsd(Sig,inParams.samplFreq,inParams.psdVec);
+    normSigSq = innerprodpsd(Sig,Sig,inParams.samplFreq,inParams.psdVec);
     % Normalization factor (estimated amplitude)
     normFac = 1/sqrt(normSigSq);
     Sig = normFac*Sig;

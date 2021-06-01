@@ -9,13 +9,6 @@ function sigVec = genEDSSig(x,snr,ta,f,tau,phi,l)
 
 sigVec=snr*exp(-(x-ta)/tau).*sin(2*pi*f*x + phi);
 
-%for i=1:length(x)
-%    if x(i) < ta
-%        sigVec(i)=0;
-%    elseif x(i) > ta+l
-%        sigVec(i)=0;
-%    end
-%end
-
 sigVec(x<ta) = 0;
 sigVec(x>ta+l) = 0;
+end

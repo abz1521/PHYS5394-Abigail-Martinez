@@ -2,6 +2,10 @@
 
 % number of data realizations to compute
 m = 50000;
+A = 10;
+a1=10;
+a2=3;
+a3=3;
 
 data1 = load('data1.txt','-ascii').'; 
 data2 = load('data2.txt','-ascii').';

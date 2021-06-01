@@ -7,9 +7,9 @@ timeVec = (0:(nSamples-1))/sampFreq;
 
 %% Generate  data realization
 % Noise + SNR=10 signal. 
-a1=9.5;
-a2=2.8;
-a3=3.2;
+a1=10;
+a2=3;
+a3=3;
 A=10;
 sigVec = crcbgenqcsig(timeVec,A,[a1,a2,a3]);
 % Signal normalized to SNR=10

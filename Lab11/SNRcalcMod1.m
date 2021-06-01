@@ -44,11 +44,6 @@ dataLen = nSamples/sampFreq;
 kNyq = floor(nSamples/2)+1;
 posFreq = (0:(kNyq-1))*(1/dataLen);
 psdPosFreq = noisePSD(posFreq);
-% figure;
-% plot(posFreq,psdPosFreq);
-% axis([0,posFreq(end),0,max(psdPosFreq)]);
-% xlabel('Frequency (Hz)');
-% ylabel('PSD ((data unit)^2/Hz)');
 
 %% Calculation of the norm
 % Norm of signal squared is inner product of signal with itself
@@ -112,7 +107,6 @@ ylabel('Periodogram');
 winLen = 0.05; %s
 ovrlp  = 0.04; %s
 
-% Convert to integer number of samples
 winLenSampl = floor(winLen*sampFreq);
 ovrlpSampl  = floor(ovrlp*sampFreq);
 [S,F,T]     = spectrogram(dataVec, winLenSampl, ovrlpSampl, [], sampFreq);
@@ -125,8 +119,8 @@ xlabel('Time (s)');
 ylabel('Frequency (Hz)');
 
 figure;
-plot(timeVec,dataVec);
+plot(x,dataVec);
 hold on;
-plot(timeVec,sigVec);
+plot(x,sigVec);
 xlabel('Time (sec)');
 ylabel('Data');
