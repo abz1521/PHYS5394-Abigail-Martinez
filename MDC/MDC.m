@@ -4,8 +4,9 @@ dataT = trainingmat.trainData;
 dataVec = load('analysisData.mat').dataVec;
 
 % Parameter Range
-rmin = [40, 1, 1];
-rmax = [100, 50, 15];
+a1 = [40,100];
+a2 = [1,50];
+a3 = [1,15];
 
 % gen time vector
 nSamples = 2048;
@@ -22,33 +23,23 @@ posFreq = interp1(1:length(posFreq),posFreq,linspace(1,length(posFreq),1025),'li
 
 %% Calculate the GLRT
 % m noise realizations
-tn = 4;
+glrtH0 = zeros(1,m);
 m = 1000;
+pars = [70,25,7];
 
-% glrtH0 vector of the GLRT values for m noise realizations, for tn^2 parameters
-glrtH0 = zeros(tn^3,m);
-allglrt = zeros(tn^3); % all glrt values
-allsign = zeros(tn^3); % all significances
-masterPars = ones(tn^3,3);
-% Manually create fir2 filter once to save time
-sqrtPSD = sqrt(psdVec);
-b = fir2(100,posFreq/(sampFreq/2),sqrtPSD);
-
-for t = 1:(tn^3)
-    for r = 1:m % m realizations
-        inNoise = randn(1,nSamples);
-        noiseVec = sqrt(sampFreq)*fftfilt(b,inNoise);
-        glrtH0(t,r) = glrtqcsig(noiseVec,sampFreq,psdVec,masterPars(t,:));
-    end
-    allglrt(t) = glrtqcsig(dataVec, sampFreq, psdVec, masterPars(t,:));
-    allsign(t) = sum(glrtH0(t,:)>=allglrt(t))/m;
+for r = 1:m % m realizations
+    inNoise = randn(1,nSamples);
+    noiseVec = sqrt(sampFreq)*fftfilt(b,inNoise);
+    glrtH0(r) = glrtqcsig(noiseVec,sampFreq,psdVec,pars(:));
 end
 
-[mSign,mIndex] = min(allsign);
-disp(['Lowest significance=',num2str(mSign(1)),newline,...
-'Parameters a1=',num2str(masterPars(mIndex(1),1)),...
-         '; a2=',num2str(masterPars(mIndex(1),2)),...
-         '; a3=',num2str(masterPars(mIndex(1),3))]);
+[mSign,mIndex] = min(glrtH0);
+disp(['Lowest significance=',num2str(mSign),newline,...
+'Parameters a1=',num2str(pars(1)),...
+         '; a2=',num2str(pars(2)),...
+         '; a3=',num2str(pars(3))]);
+% after testing several different parameters,
+% I believe there's a signal bc of very low significance     
 
 %% Call PSO
 % parameter structrue
@@ -62,8 +53,8 @@ inParams = struct('dataX',dataX,...
                   'samplFreq',sampFreq,...
                   'psdVec',psdVec,...
                   'snr',snr,...
-                  'rmin',rmin,...
-                  'rmax',rmax);
+                  'rmin',[a1(1),a2(1),a3(1)],...
+                  'rmax',[a1(2),a2(2),a3(2)]);
 
 outStruct = glrtqcpso(inParams,struct('maxSteps',2000),nRuns);
 
